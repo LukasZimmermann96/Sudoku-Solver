@@ -1,5 +1,5 @@
 import pytest
-from sudolu_solver.sudoku_solver import init_board
+from sudoku_solver.sudoku_solver import init_board, init_possible_options_board, board_is_full
 
 @pytest.mark.parametrize('input', 
                          ['board = ' +
@@ -13,13 +13,49 @@ from sudolu_solver.sudoku_solver import init_board
                           '[".",".",".","4","1","9",".",".","5"],' +
                           '[".",".",".",".","8",".",".","7","9"]]'])
 def test_init_board(input):
-  assert init_board(input) == [["5","3",".",".","7",".",".",".","."],
-                               ["6",".",".","1","9","5",".",".","."],
-                               [".","9","8",".",".",".",".","6","."],
-                               ["8",".",".",".","6",".",".",".","3"],
-                               ["4",".",".","8",".","3",".",".","1"],
-                               ["7",".",".",".","2",".",".",".","6"],
-                               [".","6",".",".",".",".","2","8","."],
-                               [".",".",".","4","1","9",".",".","5"],
-                               [".",".",".",".","8",".",".","7","9"]]
+  board = [["5","3",".",".","7",".",".",".","."],
+            ["6",".",".","1","9","5",".",".","."],
+            [".","9","8",".",".",".",".","6","."],
+            ["8",".",".",".","6",".",".",".","3"],
+            ["4",".",".","8",".","3",".",".","1"],
+            ["7",".",".",".","2",".",".",".","6"],
+            [".","6",".",".",".",".","2","8","."],
+            [".",".",".","4","1","9",".",".","5"],
+            [".",".",".",".","8",".",".","7","9"]]
+  print(input)
+  assert all([a == b for a, b in zip(init_board(input, []), board)])
 
+
+def test_init_possible_options_board():
+  length = 9
+  height = 9
+  empty_option_board = []
+  print(init_possible_options_board(length=length, height=height, empty_option_board=empty_option_board))
+  assert init_possible_options_board(length=length, height=height, empty_option_board=[])[0][0] == ["1","2","3","4","5","6","7","8","9"]
+  assert init_possible_options_board(length=length, height=height, empty_option_board=[])[length - 1][height -1] == ["1","2","3","4","5","6","7","8","9"]
+
+def test_check_board_is_solved():
+  uncomplete_board = [["5","3",".",".","7",".",".",".","."],
+                      ["6",".",".","1","9","5",".",".","."],
+                      [".","9","8",".",".",".",".","6","."],
+                      ["8",".",".",".","6",".",".",".","3"],
+                      ["4",".",".","8",".","3",".",".","1"],
+                      ["7",".",".",".","2",".",".",".","6"],
+                      [".","6",".",".",".",".","2","8","."],
+                      [".",".",".","4","1","9",".",".","5"],
+                      [".",".",".",".","8",".",".","7","9"]]
+  full_board = [["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"],
+                    ["1","2","3","4","5","6","7","8","9"]]
+  assert board_is_full(uncomplete_board) == False
+  assert board_is_full(full_board) == True
+
+def test_get_options_for_cell(board: list, option_board: list lenght_x: int, hight_y: int):
+  for option in option_board:
+  
